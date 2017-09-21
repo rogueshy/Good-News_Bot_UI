@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,44 +13,76 @@ namespace Good_News_Bot_UI
 {
     public partial class Form1 : Form
     {
+        int pythonId;
+
         public Form1()
         {
             InitializeComponent();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            button1.Enabled = false;
-            button2.Enabled = true;
-            label2.Text = "Running...";
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            button1.Enabled = true;
-            button2.Enabled = false;
-            label2.Text = "Stopped.";
+           
         }
 
         private void Form1_Resize_1(object sender, EventArgs e)
         {
-            if (FormWindowState.Minimized == this.WindowState)
+            if (WindowState == FormWindowState.Minimized)
             {
-                notifyIcon1.Visible = true;
-                notifyIcon1.BalloonTipText = "Still working, bitch";
-                notifyIcon1.BalloonTipTitle = "I AM THE TITLE";
-                notifyIcon1.ShowBalloonTip(500);
+                if (NotifCB.Checked == true)
+                {
+                    if (StatusLabelCurrent.Text == "Stopped")
+                    {
+                        NotifIcon.Visible = true;
+                        NotifIcon.BalloonTipText = "App is stopped!";
+                        NotifIcon.BalloonTipTitle = "Good News Bot UI";
+                        NotifIcon.ShowBalloonTip(500);
+                        this.Hide();
+                    }
+                    else if (StatusLabelCurrent.Text == "Running...") { 
+                        NotifIcon.Visible = true;
+                        NotifIcon.BalloonTipText = "App still running.";
+                        NotifIcon.BalloonTipTitle = "Good News Bot UI";
+                        NotifIcon.ShowBalloonTip(500);
+                        this.Hide();
+                        }
+                }
+                else {
+                    NotifIcon.Visible = true;
+                    this.Hide();
+                }
             }
-            else if (FormWindowState.Normal == this.WindowState)
+            else if (WindowState == FormWindowState.Normal)
             {
-                notifyIcon1.Visible = false;
+                NotifIcon.Visible = false;
             }
         }
 
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void NotifIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.Show();
             this.WindowState = FormWindowState.Normal;
+        }
+
+        private void MainButton_Click_1(object sender, EventArgs e)
+        {
+            System.Diagnostics.ProcessStartInfo pythonLaunch = new System.Diagnostics.ProcessStartInfo();
+            Process python;
+            pythonLaunch.FileName = "pyw";
+            pythonLaunch.Arguments = "main.py";
+            pythonLaunch.CreateNoWindow = true;
+            pythonLaunch.UseShellExecute = true;
+
+            if (StatusLabelCurrent.Text == "Stopped")
+            {
+                python = Process.Start(pythonLaunch);
+                pythonId = python.Id;
+                MainButton.Text = "Stop";
+                StatusLabelCurrent.Text = "Running...";
+            }
+            else if (StatusLabelCurrent.Text == "Running...")
+            {
+                Process toKill = Process.GetProcessById(pythonId);
+                toKill.Kill();
+                MainButton.Text = "Start";
+                StatusLabelCurrent.Text = "Stopped";
+             }
         }
     }
 }
