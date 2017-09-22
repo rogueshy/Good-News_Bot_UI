@@ -14,11 +14,12 @@ namespace Good_News_Bot_UI
     public partial class Form1 : Form
     {
         int pythonId;
+        string pyRun = "pyw";
+        string pyArgs = "main.py";
 
         public Form1()
         {
             InitializeComponent();
-           
         }
 
         private void Form1_Resize_1(object sender, EventArgs e)
@@ -62,18 +63,18 @@ namespace Good_News_Bot_UI
 
         private void MainButton_Click_1(object sender, EventArgs e)
         {
-            System.Diagnostics.ProcessStartInfo pythonLaunch = new System.Diagnostics.ProcessStartInfo();
-            Process python;
-            pythonLaunch.FileName = "pyw";
-            pythonLaunch.Arguments = "main.py";
-            pythonLaunch.CreateNoWindow = true;
-            pythonLaunch.UseShellExecute = true;
-
             if (StatusLabelCurrent.Text == "Stopped")
             {
+                ProcessStartInfo pythonLaunch = new ProcessStartInfo();
+                Process python;
+                pythonLaunch.FileName = pyRun;
+                pythonLaunch.Arguments = pyArgs;
+                pythonLaunch.CreateNoWindow = true;
+                pythonLaunch.UseShellExecute = true;
                 python = Process.Start(pythonLaunch);
                 pythonId = python.Id;
                 MainButton.Text = "Stop";
+                startStopMenu.Text = "Stop";
                 StatusLabelCurrent.Text = "Running...";
             }
             else if (StatusLabelCurrent.Text == "Running...")
@@ -81,8 +82,40 @@ namespace Good_News_Bot_UI
                 Process toKill = Process.GetProcessById(pythonId);
                 toKill.Kill();
                 MainButton.Text = "Start";
+                startStopMenu.Text = "Start";
                 StatusLabelCurrent.Text = "Stopped";
              }
+        }
+
+        private void startStopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (startStopMenu.Text == "Start")
+            {
+                ProcessStartInfo pythonLaunch = new ProcessStartInfo();
+                Process python;
+                pythonLaunch.FileName = pyRun;
+                pythonLaunch.Arguments = pyArgs;
+                pythonLaunch.CreateNoWindow = true;
+                pythonLaunch.UseShellExecute = true;
+                python = Process.Start(pythonLaunch);
+                pythonId = python.Id;
+                MainButton.Text = "Stop";
+                startStopMenu.Text = "Stop";
+                StatusLabelCurrent.Text = "Running...";
+            }
+            else if (startStopMenu.Text == "Stop")
+            {
+                Process toKill = Process.GetProcessById(pythonId);
+                toKill.Kill();
+                MainButton.Text = "Start";
+                startStopMenu.Text = "Start";
+                StatusLabelCurrent.Text = "Stopped";
+            }
+        }
+
+        private void exitMenu_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

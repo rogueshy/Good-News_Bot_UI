@@ -33,8 +33,12 @@
             this.StatusLabel = new System.Windows.Forms.Label();
             this.StatusLabelCurrent = new System.Windows.Forms.Label();
             this.NotifIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.NotifContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.exitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.NotifCB = new System.Windows.Forms.CheckBox();
             this.MainButton = new System.Windows.Forms.Button();
+            this.startStopMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotifContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // StatusLabel
@@ -57,10 +61,26 @@
             // 
             // NotifIcon
             // 
+            this.NotifIcon.ContextMenuStrip = this.NotifContextMenu;
             this.NotifIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("NotifIcon.Icon")));
             this.NotifIcon.Text = "Good News Bot UI";
             this.NotifIcon.Visible = true;
             this.NotifIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifIcon_MouseDoubleClick);
+            // 
+            // NotifContextMenu
+            // 
+            this.NotifContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.startStopMenu,
+            this.exitMenu});
+            this.NotifContextMenu.Name = "NotifContextMenu";
+            this.NotifContextMenu.Size = new System.Drawing.Size(153, 70);
+            // 
+            // exitMenu
+            // 
+            this.exitMenu.Name = "exitMenu";
+            this.exitMenu.Size = new System.Drawing.Size(152, 22);
+            this.exitMenu.Text = "Exit";
+            this.exitMenu.Click += new System.EventHandler(this.exitMenu_Click);
             // 
             // NotifCB
             // 
@@ -82,6 +102,13 @@
             this.MainButton.UseVisualStyleBackColor = true;
             this.MainButton.Click += new System.EventHandler(this.MainButton_Click_1);
             // 
+            // startStopMenu
+            // 
+            this.startStopMenu.Name = "startStopMenu";
+            this.startStopMenu.Size = new System.Drawing.Size(152, 22);
+            this.startStopMenu.Text = "Start";
+            this.startStopMenu.Click += new System.EventHandler(this.startStopToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -97,6 +124,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Good News Bot UI";
             this.Resize += new System.EventHandler(this.Form1_Resize_1);
+            this.NotifContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -109,6 +137,9 @@
         private System.Windows.Forms.NotifyIcon NotifIcon;
         private System.Windows.Forms.CheckBox NotifCB;
         private System.Windows.Forms.Button MainButton;
+        private System.Windows.Forms.ContextMenuStrip NotifContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem exitMenu;
+        private System.Windows.Forms.ToolStripMenuItem startStopMenu;
     }
 }
 
